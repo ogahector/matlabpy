@@ -82,11 +82,11 @@ def create_file(filename: str):
     print("File Created Successfully!")
 
 # WRITE GLOBALS TO FILE
-def write(filename: str, vars=[], overwrite=False) -> None:
+def write(filename: str, overwrite=False, vars=[]) -> None:
     with open(filename, 'ab' if not overwrite else 'wb') as file:
         d = {}
         if vars == []:
-            for name, val in globals().items(): d.update({name: val})
+            for name, val in myvars().items(): d.update({name: val})
         else:
             for name, val in vars: d.update({name: val})
         p.dump(d, file)
@@ -94,29 +94,22 @@ def write(filename: str, vars=[], overwrite=False) -> None:
 
 # READ FROM FILE
 def load(filename: str):
-    with open(filename, 'rb') as file:
-        d = load(file)
-        return MATStruct(d)
+    with open(filename, "rb") as file:
+        return MATStruct(p.load(file))
 
-print(globals())
+def myvars() -> dict[str, any]:
+    # return {name: val for name, val in globals().items() if type(val) != type(print()) or type(val) != type(m)}
+    d = {}
+    for name, val in globals().items():
+        if type(val) != type(print) and type(val) != type(m) and type(val) != type(myvars) and not name.startswith("__"):
+            d.update({name: val})
+    return d
 
-# a = 1
-# b = 1.0
-# c = "1"
-# d = '1'
-# e = [1, 2, 3]
-# f = (1, 2, 3)
-# g = {'a': 1, 'b': 2, 'c': 3}
-
-# # create_file("test.txt")
-# write("test.txt")
-# S = load("test.txt")
-# print(vars(S))
-
-
+def whos(filename: str=""):
+    
 
 ### ----------------------------------------------------------------------------------###
-# 
+
 def pfd(n: int) -> list[int]:
     ret = []
     i = n
