@@ -100,13 +100,15 @@ def load(filename: str):
 def myvars() -> dict[str, any]:
     # return {name: val for name, val in globals().items() if type(val) != type(print()) or type(val) != type(m)}
     d = {}
-    for name, val in globals().items():
+    for name, val in locals().items():
         if type(val) != type(print) and type(val) != type(m) and type(val) != type(myvars) and not name.startswith("__"):
             d.update({name: val})
     return d
 
 def whos(filename: str=""):
-    
+    pass
+
+
 
 ### ----------------------------------------------------------------------------------###
 
